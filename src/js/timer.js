@@ -7,11 +7,12 @@ class CountdownTimer {
   constructor({ targetDate } = {}) {
     this.targetDate = targetDate;
     this.init();
+    this.stop();
   }
 
   init() {
     this.getDeltaTime();
-    setInterval(() => {
+    this.intervalId = setInterval(() => {
       this.getDeltaTime();
     }, 1000);
   }
@@ -19,6 +20,11 @@ class CountdownTimer {
   getDeltaTime() {
     const deltaTime = this.targetDate - Date.now();
     this.getTimeComponents(deltaTime);
+    if (deltaTime <= 0) {
+      clearInterval(this.intervalId);
+      getTimeComponents(0);
+      return;
+    }
   }
 
   getTimeComponents(time) {
@@ -44,5 +50,5 @@ class CountdownTimer {
 
 const timer = new CountdownTimer({
   selector: '#timer-1',
-  targetDate: new Date(2021, 11, 4, 0, 0, 0, 0),
+  targetDate: new Date(2021, 11, 04, 0, 0, 0, 0),
 });
